@@ -7,6 +7,7 @@
     <script type="text/javascript" src="flashlsAPI.js"></script>
     <script type="text/javascript" src="../libs/js2flash.js"></script>
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/swfobject/2.2/swfobject_src.js"></script>
     <style>
         .center
         {
@@ -25,48 +26,64 @@
         <input id="streamURL" class="innerControlsLeft" type=text value=""/>
         <button type="button" class="innerControlsRight" onclick="loadUrl($('#streamURL').val());">load</button>
     </div>
+    <br />
+    <div id="controls1">
+        <input id="streamURL1" class="innerControlsLeft" type=text value=""/>
+        <button type="button" class="innerControlsRight" onclick="loadUrl1($('#streamURL1').val());">load</button>
+    </div>
     <div class="center" id="video">
-        <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
-                codebase="" id="largeVideo" width="860" height="500">
-            <param name="movie"  value="../../bin/release/flashlsChromeless.swf?inline=1" />
-            <param name="quality" value="autohigh" />
-            <param name="swliveconnect" value="true" />
-            <param name="allowScriptAccess" value="sameDomain" />
-            <param name="bgcolor" value="#0" />
-            <param name="allowFullScreen" value="true" />
-            <param name="wmode" value="window" />
-            <param name="FlashVars" value="callback=flashlsCallback" />
-
-            <embed src="../../bin/release/flashlsChromeless.swf?inline=1" width="860" height="500" name="largeVideo"
-                   quality="autohigh"
-                   bgcolor="#0"
-                   align="middle" allowFullScreen="true"
-                   allowScriptAccess="sameDomain"
-                   type="application/x-shockwave-flash"
-                   swliveconnect="true"
-                   wmode="window"
-                   FlashVars="callback=flashlsCallback"
-                   pluginspage="http://www.macromedia.com/go/getflashplayer" >
-            </embed>
-        </object>
+        <div id="replaceVideo"></div>
+        <p></p>
+        <div id="replaceVideo1"></div>
     </div>
 
+
 <script>
-    var api;
+createVideo("largeVideo","replaceVideo");
+function loadUrl(url){
+    api = window["api_largeVideo"];
+    api.stop();
+    api.load(url);
+}
 
-    function loadUrl(url){
-        api.stop();
-        api.load(url);
+createVideo("largeVideo1","replaceVideo1");
+function loadUrl1(url){
+    api = window["api_largeVideo1"];
+    api.stop();
+    api.load(url);
+}
+
+function createVideo( name,container ){
+    var callbackName="fls_"+name;
+    var apiName="api_"+name;
+
+    window[callbackName]=function(eventName, args){
+        handler[eventName].apply(null, args);
     }
-
-    window.flashlsCallback = function(eventName, args) {
-        flashlsEvents[eventName].apply(null, args);
-    };
-    var flashlsEvents = {
-        ready: function (flashTime) {
-            flashPingDate = flashTime;
-            jsPingDate = new Date();
-            api = new flashlsAPI(getFlashMovieObject("largeVideo"));
+    var params = {
+        quality : "autohigh",
+        swliveconnect : true,
+        allowScriptAccess : "somedomain",
+        bgcolor : "#0",
+        allowFullScreen : true,
+        wmode : "window",
+        FlashVars : "callback="+callbackName
+    } ;
+    var attributes = {
+        data : "../../bin/release/flashlsChromeless.swf?inline=1",
+        id : name ,
+        name : name,
+        width : 860,
+        height : 500
+    } ;
+    var obj = swfobject.createSWF(attributes,params,container);
+    //api = new flashlsAPI(obj);
+    var handler = {
+        ready: function () {
+            // 多个播放器的情况下为啥这里就不能用obj ， 而用getFlashMovieObject(name) 就可以
+            //api = new flashlsAPI( obj );
+            api = new flashlsAPI(getFlashMovieObject(name));
+            window[apiName] = api;
         },
         videoSize: function (width, height) {
             console.log("Vedio size:" + width + "," + height)
@@ -78,23 +95,54 @@
             console.log("onError():error code:" + code + " url:" + url + " message:" + message);
         },
         manifest: function (duration, levels, loadmetrics) {
-            //showCanvas();
-            console.log(loadmetrics);
-            api.play(-1);
+            //这里也可以直接用api
+            if(window[apiName])
+                window[apiName].play(-1);
         },
-//        audioLevelLoaded: function (loadmetrics) {
-//            console.log(loadmetrics);
-//        },
-//        levelLoaded: function (loadmetrics) {
-//            console.log(loadmetrics);
-//        },
-        state : function(state){
-            console.log("stat:"+state);
-        },
-        click : function(action){
-            console.log("click"+action)
+        state: function (state) {
+            console.log("stat:" + state);
         }
     }
+
+}
+
+//    swfobject.embedSWF ( "../../bin/release/flashlsChromeless.swf?inline=1" ,
+//        "video" , "860" , "500" , " 9.0.0" , null , flashvars, params , attributes ) ;
+</script>
+
+<script>
+//    var api;
+//
+//    function loadUrl(url){
+//        api.stop();
+//        api.load(url);
+//    }
+//
+//    window.flashlsCallback = function(eventName, args) {
+//        flashlsEvents[eventName].apply(null, args);
+//    };
+//    var flashlsEvents = {
+//        ready: function () {
+//            //api = new flashlsAPI(getFlashMovieObject("largeVideo"));
+//        },
+//        videoSize: function (width, height) {
+//            console.log("Vedio size:" + width + "," + height)
+//        },
+//        complete: function () {
+//            console.log("onComplete(), playback completed");
+//        },
+//        error: function (code, url, message) {
+//            console.log("onError():error code:" + code + " url:" + url + " message:" + message);
+//        },
+//        manifest: function (duration, levels, loadmetrics) {
+//            //showCanvas();
+//            console.log(loadmetrics);
+//            api.play(-1);
+//        },
+//        state : function(state){
+//            console.log("stat:"+state);
+//        }
+//    }
 
 </script>
 </body>

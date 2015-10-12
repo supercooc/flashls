@@ -504,16 +504,16 @@ package org.mangui.chromeless {
         }
 
         private function handleMouseClick() : void {
-            _trigger("click" );
+            //_trigger("click" );
             if(!isDoubleClick){
                 //单击暂停或者启动
                 if(_hls.playbackState == HLSPlayStates.PAUSED || _hls.playbackState == HLSPlayStates.PAUSED_BUFFERING){
                     //可以实现展示加载信息
                     _resume();
-                    _trigger("click" , "resume");
+                    //_trigger("click" , "resume");
                 }else{
                     _pause();
-                    _trigger("click" , "pause");
+                    //_trigger("click" , "pause");
                 }
             }
         }
