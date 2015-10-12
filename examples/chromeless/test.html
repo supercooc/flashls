@@ -39,26 +39,27 @@
 
 
 <script>
-createVideo("largeVideo","replaceVideo");
+createVideo("largeVideo","replaceVideo",860,500);
 function loadUrl(url){
     api = window["api_largeVideo"];
     api.stop();
     api.load(url);
 }
 
-createVideo("largeVideo1","replaceVideo1");
+createVideo("largeVideo1","replaceVideo1",400,300);
 function loadUrl1(url){
     api = window["api_largeVideo1"];
     api.stop();
     api.load(url);
 }
 
-function createVideo( name,container ){
+function createVideo( name,container ,width,height){
     var callbackName="fls_"+name;
     var apiName="api_"+name;
 
     window[callbackName]=function(eventName, args){
-        handler[eventName].apply(null, args);
+        if(handler[eventName])
+            handler[eventName].apply(null, args);
     }
     var params = {
         quality : "autohigh",
@@ -73,11 +74,11 @@ function createVideo( name,container ){
         data : "../../bin/release/flashlsChromeless.swf?inline=1",
         id : name ,
         name : name,
-        width : 860,
-        height : 500
+        width : width,
+        height : height
     } ;
     var obj = swfobject.createSWF(attributes,params,container);
-    //api = new flashlsAPI(obj);
+    var api ; //= new flashlsAPI(obj);
     var handler = {
         ready: function () {
             // 多个播放器的情况下为啥这里就不能用obj ， 而用getFlashMovieObject(name) 就可以
@@ -96,8 +97,7 @@ function createVideo( name,container ){
         },
         manifest: function (duration, levels, loadmetrics) {
             //这里也可以直接用api
-            if(window[apiName])
-                window[apiName].play(-1);
+            api.play(-1);
         },
         state: function (state) {
             console.log("stat:" + state);
