@@ -512,7 +512,7 @@ package org.mangui.chromeless {
                 }else{
                     _pause();
                 }
-                _trigger("click",arguments, getTimer());
+                _trigger("click",arguments[0], new Date());
             }
         }
 

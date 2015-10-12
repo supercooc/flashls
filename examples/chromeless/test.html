@@ -82,17 +82,18 @@
             console.log(loadmetrics);
             api.play(-1);
         },
-        audioLevelLoaded: function (loadmetrics) {
-            console.log(loadmetrics);
-        },
-        levelLoaded: function (loadmetrics) {
-            console.log(loadmetrics);
-        },
+//        audioLevelLoaded: function (loadmetrics) {
+//            console.log(loadmetrics);
+//        },
+//        levelLoaded: function (loadmetrics) {
+//            console.log(loadmetrics);
+//        },
         state : function(state){
             console.log("stat:"+state);
         },
         click : function(start, end){
-            console.log("click:"+  (end - start));
+            time = end.getTime() - start.getTime();
+            console.log("click:"+   time );
         },
         dbclick : function(){
             console.log("dbclick");
