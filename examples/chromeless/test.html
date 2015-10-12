@@ -27,7 +27,7 @@
     </div>
     <div class="center" id="video">
         <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
-                codebase="" id="largeVideo" width="720" height="480">
+                codebase="" id="largeVideo" width="860" height="500">
             <param name="movie"  value="../../bin/release/flashlsChromeless.swf?inline=1" />
             <param name="quality" value="autohigh" />
             <param name="swliveconnect" value="true" />
@@ -37,7 +37,7 @@
             <param name="wmode" value="window" />
             <param name="FlashVars" value="callback=flashlsCallback" />
 
-            <embed src="../../bin/release/flashlsChromeless.swf?inline=1" width="720" height="480" name="largeVideo"
+            <embed src="../../bin/release/flashlsChromeless.swf?inline=1" width="860" height="500" name="largeVideo"
                    quality="autohigh"
                    bgcolor="#0"
                    align="middle" allowFullScreen="true"
@@ -90,16 +90,6 @@
 //        },
         state : function(state){
             console.log("stat:"+state);
-        },
-        click : function(start, end){
-            time = end.getTime() - start.getTime();
-            console.log("click:"+   time );
-        },
-        dbclick : function(state){
-            console.log("dbclick:"+state);
-        },
-        mouseEvent : function(isDoubleClick){
-            console.log("mouseEvent:"+isDoubleClick);
         }
     }
 

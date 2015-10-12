@@ -482,46 +482,39 @@ package org.mangui.chromeless {
             if (!isNaN(_mediaPosition)) {
                 _hls.stream.seek(_mediaPosition);
             }
-        };
+        }
 
-        /**
-         * 点击标志
-         */
-//        private var isDoubleClick : Boolean = false;
-
+        private var isDoubleClick : Boolean = false;
         /** Mouse click handler. **/
         protected function _clickHandler(event : MouseEvent) : void {
-            //isDoubleClick = false;
-            //setTimeout(handleMouseEvent,260, new Date());
-            //单击暂停或者启动
-            if(_hls.playbackState == HLSPlayStates.PAUSED || _hls.playbackState == HLSPlayStates.PAUSED_BUFFERING){
-                _resume();
-            }else{
-                _pause();
-            }
-            _trigger("click");
-        };
+            isDoubleClick = false;
+            setTimeout(handleMouseClick,300, new Date());
+            //_trigger("click");
+        }
         //双击事件
         protected function _doubleClickHandler(event : MouseEvent) : void {
-            //isDoubleClick = true;
+            isDoubleClick = true;
             //双击视频放大 或者 缩小
             if (stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE || stage.displayState == StageDisplayState.FULL_SCREEN) {
                 stage.displayState = StageDisplayState.NORMAL;
             } else {
                 stage.displayState = StageDisplayState.FULL_SCREEN;
             }
-            _trigger("dbclick" );
+            //_trigger("dbclick" );
         }
 
-//        private function handleMouseEvent() : void {
-//            _trigger("mouseEvent", isDoubleClick);
-//            if(isDoubleClick){
-//
-//            }else{
-//
-//                _trigger("click",arguments[0], new Date());
-//            }
-//        }
+        private function handleMouseClick() : void {
+            if(!isDoubleClick){
+                //单击暂停或者启动
+                if(_hls.playbackState == HLSPlayStates.PAUSED || _hls.playbackState == HLSPlayStates.PAUSED_BUFFERING){
+                    //可以实现展示加载信息
+                    _resume();
+                }else{
+                    _pause();
+                }
+            }
+        }
+
 
         /** StageVideo detector. **/
         protected function _onStageVideoState(event : StageVideoAvailabilityEvent) : void {
