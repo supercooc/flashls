@@ -141,6 +141,9 @@ package org.mangui.chromeless {
             _sheet.graphics.beginFill(0x000000, 0);
             _sheet.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
             _sheet.addEventListener(MouseEvent.CLICK, _clickHandler);
+            //开启双击事件
+            _sheet.doubleClickEnabled = true;
+            _sheet.mouseChildren = false;
             _sheet.addEventListener(MouseEvent.DOUBLE_CLICK, _doubleClickHandler);
             _sheet.buttonMode = true;
             addChild(_sheet);
