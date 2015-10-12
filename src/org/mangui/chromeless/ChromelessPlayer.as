@@ -547,16 +547,27 @@ package org.mangui.chromeless {
         };
 
         protected function _resize() : void {
-            var rect : Rectangle;
-            rect = ScaleVideo.resizeRectangle(_videoWidth, _videoHeight, stage.stageWidth, stage.stageHeight);
-            // resize video
-            if (_video) {
-                _video.width = rect.width;
-                _video.height = rect.height;
-                _video.x = rect.x;
-                _video.y = rect.y;
-            } else if (_stageVideo && rect.width > 0) {
-                _stageVideo.viewPort = rect;
+            if (stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE || stage.displayState == StageDisplayState.FULL_SCREEN) {
+                //全屏
+                var rect : Rectangle = ScaleVideo.resizeRectangle(_videoWidth, _videoHeight, stage.stageWidth, stage.stageHeight);
+                // resize video
+                if (_video) {
+                    _video.width = rect.width;
+                    _video.height = rect.height;
+                    _video.x = rect.x;
+                    _video.y = rect.y;
+                } else if (_stageVideo && rect.width > 0) {
+                    _stageVideo.viewPort = rect;
+                }
+            } else {
+                //原始大小
+                //不管拉伸，直接适配舞台大小？
+                if(_video){
+                    _video.width =  stage.stageWidth;
+                    _video.height = stage.stageHeight;
+                }else if(_stageVideo ){
+                    _stageVideo.viewPort = new Rectangle(0,0,stage.stageWidth,stage.stageHeight);
+                }
             }
         }
     }
