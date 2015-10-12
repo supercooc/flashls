@@ -15,7 +15,9 @@ package org.mangui.chromeless {
     import flash.system.Security;
     import flash.utils.getTimer;
     import flash.utils.setTimeout;
-    import org.mangui.hls.event.HLSError;
+
+import org.mangui.hls.constant.HLSPlayStates;
+import org.mangui.hls.event.HLSError;
     import org.mangui.hls.event.HLSEvent;
     import org.mangui.hls.HLS;
     import org.mangui.hls.HLSSettings;
@@ -139,6 +141,7 @@ package org.mangui.chromeless {
             _sheet.graphics.beginFill(0x000000, 0);
             _sheet.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
             _sheet.addEventListener(MouseEvent.CLICK, _clickHandler);
+            _sheet.addEventListener(MouseEvent.DOUBLE_CLICK, _doubleClickHandler);
             _sheet.buttonMode = true;
             addChild(_sheet);
         }
@@ -478,14 +481,38 @@ package org.mangui.chromeless {
             }
         };
 
+        /**
+         * 点击标志
+         */
+        private var isDoubleClick = false;
+
         /** Mouse click handler. **/
         protected function _clickHandler(event : MouseEvent) : void {
-            if (stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE || stage.displayState == StageDisplayState.FULL_SCREEN) {
-                stage.displayState = StageDisplayState.NORMAL;
-            } else {
-                stage.displayState = StageDisplayState.FULL_SCREEN;
-            }
+            isDoubleClick = false;
+            setTimeout(handleMouseEvent,260);
         };
+        //双击事件
+        protected function _doubleClickHandler(event : MouseEvent) : void {
+            isDoubleClick = true;
+        }
+
+        private function handleMouseEvent() : void {
+            if(isDoubleClick){
+                //双击视频放大 或者 缩小
+                if (stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE || stage.displayState == StageDisplayState.FULL_SCREEN) {
+                    stage.displayState = StageDisplayState.NORMAL;
+                } else {
+                    stage.displayState = StageDisplayState.FULL_SCREEN;
+                }
+            }else{
+                //单击暂停或者启动
+                if(_hls.playbackState == HLSPlayStates.PAUSED || _hls.playbackState == HLSPlayStates.PAUSED_BUFFERING){
+                    _resume();
+                }else{
+                    _pause();
+                }
+            }
+        }
 
         /** StageVideo detector. **/
         protected function _onStageVideoState(event : StageVideoAvailabilityEvent) : void {
