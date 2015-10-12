@@ -497,10 +497,10 @@ package org.mangui.chromeless {
         //双击事件
         protected function _doubleClickHandler(event : MouseEvent) : void {
             isDoubleClick = true;
-
         }
 
         private function handleMouseEvent() : void {
+            _trigger("mouseEvent", isDoubleClick);
             if(isDoubleClick){
                 //双击视频放大 或者 缩小
                 if (stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE || stage.displayState == StageDisplayState.FULL_SCREEN) {
