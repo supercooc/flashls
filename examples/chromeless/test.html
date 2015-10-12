@@ -1,0 +1,92 @@
+<html>
+<head>
+    <title>测试播放器</title>
+    <script type="text/javascript" src="flashlsAPI.js"></script>
+    <script type="text/javascript" src="../libs/js2flash.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.js"></script>
+    <style>
+        .center
+        {
+            width: 70%;
+            min-width: 615px;
+            overflow: hidden;
+            margin-left: auto;
+            margin-right: auto;
+            display: block
+        }
+    </style>
+</head>
+
+<body>
+    <div id="controls">
+        <input id="streamURL" class="innerControlsLeft" type=text value=""/>
+        <button type="button" class="innerControlsRight" onclick="loadUrl($('#streamURL').val());">load</button>
+    </div>
+    <div class="center" id="video">
+        <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
+                codebase="" id="largeVideo" width="720" height="480">
+            <param name="movie"  value="../../bin/release/flashlsChromeless.swf?inline=1" />
+            <param name="quality" value="autohigh" />
+            <param name="swliveconnect" value="true" />
+            <param name="allowScriptAccess" value="sameDomain" />
+            <param name="bgcolor" value="#0" />
+            <param name="allowFullScreen" value="true" />
+            <param name="wmode" value="window" />
+            <param name="FlashVars" value="callback=flashlsCallback" />
+
+            <embed src="../../bin/release/flashlsChromeless.swf?inline=1" width="720" height="480" name="largeVideo"
+                   quality="autohigh"
+                   bgcolor="#0"
+                   align="middle" allowFullScreen="true"
+                   allowScriptAccess="sameDomain"
+                   type="application/x-shockwave-flash"
+                   swliveconnect="true"
+                   wmode="window"
+                   FlashVars="callback=flashlsCallback"
+                   pluginspage="http://www.macromedia.com/go/getflashplayer" >
+            </embed>
+        </object>
+    </div>
+
+<script>
+    var api;
+
+    function loadUrl(url){
+        api.stop();
+        api.load(url);
+    }
+
+    window.flashlsCallback = function(eventName, args) {
+        flashlsEvents[eventName].apply(null, args);
+    };
+    var flashlsEvents = {
+        ready: function (flashTime) {
+            flashPingDate = flashTime;
+            jsPingDate = new Date();
+            api = new flashlsAPI(getFlashMovieObject("largeVideo"));
+        },
+        videoSize: function (width, height) {
+            console.log("Vedio size:" + width + "," + height)
+        },
+        complete: function () {
+            console.log("onComplete(), playback completed");
+        },
+        error: function (code, url, message) {
+            console.log("onError():error code:" + code + " url:" + url + " message:" + message);
+        },
+        manifest: function (duration, levels, loadmetrics) {
+            //showCanvas();
+            console.log(loadmetrics);
+            api.play(-1);
+        },
+        audioLevelLoaded: function (loadmetrics) {
+            console.log(loadmetrics);
+        },
+        levelLoaded: function (loadmetrics) {
+            console.log(loadmetrics);
+        }
+    }
+
+</script>
+</body>
+</html>

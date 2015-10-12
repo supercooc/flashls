@@ -79,7 +79,7 @@ header {
 <script type="text/javascript" src="../libs/canvas.js"></script>
 <script type="text/javascript" src="../libs/metrics.js"></script>
 <script type="text/javascript" src="../libs/jsonpack.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
@@ -112,7 +112,7 @@ header {
     <div class="center" id="video">
         <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
          codebase="" id="moviename" width="720" height="480">
-        <param name="movie"  value="../../bin/debug/flashlsChromeless.swf?inline=1" />
+        <param name="movie"  value="../../bin/release/flashlsChromeless.swf?inline=1" />
         <param name="quality" value="autohigh" />
         <param name="swliveconnect" value="true" />
         <param name="allowScriptAccess" value="sameDomain" />
@@ -121,7 +121,7 @@ header {
         <param name="wmode" value="window" />
         <param name="FlashVars" value="callback=flashlsCallback" />
 
-        <embed src="../../bin/debug/flashlsChromeless.swf?inline=1" width="720" height="480" name="moviename"
+        <embed src="../../bin/release/flashlsChromeless.swf?inline=1" width="720" height="480" name="moviename"
                     quality="autohigh"
                     bgcolor="#0"
                     align="middle" allowFullScreen="true"
@@ -420,18 +420,19 @@ var flashlsEvents = {
     $('#hwVideoDecoderState').html(api.getUseHardwareVideoDecoder().toString());
   },
   videoSize: function(width, height) {
-    var event = {time : new Date() - jsLoadDate, type : "resize", name : width + 'x' + height};
-    events.video.push(event);
-    $("#currentResolution").html("video resolution:" + width + 'x' + height);
-    var ratio = width / height;
-    if (width > $('#video').innerWidth()-30) {
-        width = $('#video').innerWidth()-30;
-        height = Math.round(width / ratio);
-    }
-   api.flashObject.width = width;
-   api.flashObject.height = height;
-   var canvas = $('#buffered_c')[0];
-   canvas.width = width;
+//    var event = {time : new Date() - jsLoadDate, type : "resize", name : width + 'x' + height};
+//    events.video.push(event);
+//    $("#currentResolution").html("video resolution:" + width + 'x' + height);
+//    var ratio = width / height;
+//    if (width > $('#video').innerWidth()-30) {
+//        width = $('#video').innerWidth()-30;
+//        height = Math.round(width / ratio);
+//    }
+//   api.flashObject.width = width;
+//   api.flashObject.height = height;
+//   var canvas = $('#buffered_c')[0];
+//   canvas.width = width;
+      console.log("Vedio size:"+width+","+height)
   },
   complete: function() {
     appendLog("onComplete(), playback completed");
