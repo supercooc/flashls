@@ -497,7 +497,7 @@ package org.mangui.chromeless {
         //双击事件
         protected function _doubleClickHandler(event : MouseEvent) : void {
             isDoubleClick = true;
-            _trigger("dbclick");
+
         }
 
         private function handleMouseEvent() : void {
@@ -508,6 +508,7 @@ package org.mangui.chromeless {
                 } else {
                     stage.displayState = StageDisplayState.FULL_SCREEN;
                 }
+                _trigger("dbclick", stage.displayState);
             }else{
                 //单击暂停或者启动
                 if(_hls.playbackState == HLSPlayStates.PAUSED || _hls.playbackState == HLSPlayStates.PAUSED_BUFFERING){
