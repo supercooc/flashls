@@ -1,6 +1,9 @@
 <html>
 <head>
     <title>测试播放器</title>
+
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+
     <script type="text/javascript" src="flashlsAPI.js"></script>
     <script type="text/javascript" src="../libs/js2flash.js"></script>
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.js"></script>
@@ -84,6 +87,15 @@
         },
         levelLoaded: function (loadmetrics) {
             console.log(loadmetrics);
+        },
+        state : function(state){
+            console.log("stat:"+state);
+        },
+        click : function(start, end){
+            console.log("click:"+  (end - start));
+        },
+        dbclick : function(){
+            console.log("dbclick");
         }
     }
 

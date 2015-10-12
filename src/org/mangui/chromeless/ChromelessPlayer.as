@@ -16,8 +16,8 @@ package org.mangui.chromeless {
     import flash.utils.getTimer;
     import flash.utils.setTimeout;
 
-import org.mangui.hls.constant.HLSPlayStates;
-import org.mangui.hls.event.HLSError;
+    import org.mangui.hls.constant.HLSPlayStates;
+    import org.mangui.hls.event.HLSError;
     import org.mangui.hls.event.HLSEvent;
     import org.mangui.hls.HLS;
     import org.mangui.hls.HLSSettings;
@@ -484,16 +484,17 @@ import org.mangui.hls.event.HLSError;
         /**
          * 点击标志
          */
-        private var isDoubleClick = false;
+        private var isDoubleClick : Boolean = false;
 
         /** Mouse click handler. **/
         protected function _clickHandler(event : MouseEvent) : void {
             isDoubleClick = false;
-            setTimeout(handleMouseEvent,260);
+            setTimeout(handleMouseEvent,260, new Date());
         };
         //双击事件
         protected function _doubleClickHandler(event : MouseEvent) : void {
             isDoubleClick = true;
+            _trigger("dbclick");
         }
 
         private function handleMouseEvent() : void {
@@ -511,6 +512,7 @@ import org.mangui.hls.event.HLSError;
                 }else{
                     _pause();
                 }
+                _trigger("click",arguments, getTimer());
             }
         }
 
