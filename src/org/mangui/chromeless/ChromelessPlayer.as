@@ -488,7 +488,7 @@ package org.mangui.chromeless {
         /** Mouse click handler. **/
         protected function _clickHandler(event : MouseEvent) : void {
             isDoubleClick = false;
-            setTimeout(handleMouseClick,300, new Date());
+            setTimeout(handleMouseClick,260);
             //_trigger("click");
         }
         //双击事件
@@ -504,13 +504,16 @@ package org.mangui.chromeless {
         }
 
         private function handleMouseClick() : void {
+            _trigger("click" );
             if(!isDoubleClick){
                 //单击暂停或者启动
                 if(_hls.playbackState == HLSPlayStates.PAUSED || _hls.playbackState == HLSPlayStates.PAUSED_BUFFERING){
                     //可以实现展示加载信息
                     _resume();
+                    _trigger("click" , "resume");
                 }else{
                     _pause();
+                    _trigger("click" , "pause");
                 }
             }
         }
